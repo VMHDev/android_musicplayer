@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardElevation="0dp"
+        card_view:cardBackgroundColor="@android:color/transparent"
+        card_view:cardPreventCornerOverlap="false">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1">
+
+            <TableRow>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_size_small"
+                    android:layout_marginTop="@dimen/margin_size_small"
+                    android:layout_marginRight="@dimen/margin_size_normal"
+                    android:layout_marginBottom="@dimen/margin_size_small"
+                    app:cardCornerRadius="@dimen/border_radius_small"
+                    app:cardUseCompatPadding="true"
+                    card_view:cardBackgroundColor="@color/colorWhiteLight"
+                    card_view:cardElevation="@dimen/elevation_xsmall"
+                    card_view:contentPadding="0dp">
+
+                    <ImageView
+                        android:id="@+id/imgSong"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/shape_circle"
+                        android:scaleType="fitXY"
+                        tools:srcCompat="@mipmap/music_file_128" />
+
+                </android.support.v7.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tiêu đề bài hát"
+                        android:textColor="@color/colorTitleWhitePrimary"
+                        android:textSize="@dimen/text_size_small"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtArtist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ca sĩ"
+                        android:textColor="@color/colorTitleWhitePrimary"
+                        android:textSize="@dimen/text_size_small" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:paddingHorizontal="@dimen/margin_size_small">
+
+                    <TextView
+                        android:id="@+id/txtDuration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="Thời gian"
+                        android:textColor="@color/colorTitleSecondary"
+                        android:textSize="@dimen/text_size_small" />
+                </LinearLayout>
+
+            </TableRow>
+
+        </TableLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
