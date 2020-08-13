@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/colorBgPrimaryTranslucent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/text_size_normal"
+    android:paddingVertical="@dimen/margin_size_snormal"
+    android:maxHeight="@dimen/max_height_dialog"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:paddingVertical="@dimen/margin_size_snormal"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginRight="@dimen/margin_size_snormal"
+            android:src="@drawable/ic_playlist_add_black_32dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_snormal"
+            android:layout_marginBottom="@dimen/text_size_normal"
+            android:layout_gravity="center_vertical"
+            android:text="Thêm vào Playlist"
+            android:textColor="@color/colorTitleWhiteSecondary"
+            android:textSize="@dimen/text_size_large" />
+    </LinearLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcvPlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:maxHeight="@dimen/max_height_dialog"
+        />
+</LinearLayout>

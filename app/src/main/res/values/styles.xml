@@ -21,4 +21,18 @@
         <item name="android:textSize">@dimen/tab_text_size</item>
         <item name="android:textAllCaps">true</item>
     </style>
+
+    <style name="seekBarControlPlay" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressBackgroundTint" tools:targetApi="lollipop">@color/colorPrimaryLight</item>
+        <item name="android:progressTint" tools:targetApi="lollipop">@color/colorAccent</item>
+        <item name="android:colorControlActivated" tools:targetApi="lollipop">@color/colorAccent</item>
+    </style>
+
+    <style name="EditText.Primary" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/colorTitleWhitePrimary</item>
+        <item name="android:textColorHint">@color/colorTitleWhitePrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
 </resources>

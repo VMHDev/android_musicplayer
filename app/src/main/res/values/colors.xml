@@ -8,9 +8,14 @@
     <color name="colorTitlePrimary">#212121</color>
     <color name="colorTitleSecondary">#616161</color>
     <color name="colorTitleWhitePrimary">#FAFAFA</color>
+    <color name="colorTitleWhiteSecondary">#E0E0E0</color>
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorWhiteLight">#FAFAFA</color>
 
+    <color name="colorBlackGlassLight">#10000000</color>
+
     <color name="colorTranparent">#00FFFFFF</color>
+
+    <color name="colorBgPrimaryTranslucent">#FF263238</color>
 </resources>

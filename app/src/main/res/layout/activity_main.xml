@@ -17,17 +17,19 @@
         android:id="@+id/layoutAppbarMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="@color/colorTranparent"
         android:gravity="top"
-        app:elevation="0dp">
+        android:outlineProvider="bounds"
+        app:elevation="4dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/tool_bar_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorTranparent"
+            android:outlineProvider="bounds"
             android:theme="@style/AppTheme.Toolbar"
-            app:title="MP20"/>
+            app:title="MP20"></android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tablayout_main"
@@ -35,16 +37,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:background="@color/colorTranparent"
-            app:tabBackground="?attr/selectableItemBackground"
             app:tabGravity="fill"
-            app:tabIndicatorColor="@color/colorAccent"
+            app:tabIndicatorColor="@color/colorWhite"
             app:tabIndicatorFullWidth="false"
-            app:tabIndicatorGravity="bottom"
-            app:tabIndicatorHeight="2dp"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/colorAccent"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="scrollable"
+            app:tabPaddingEnd="@dimen/margin_size_xlarge"
+            app:tabPaddingStart="@dimen/margin_size_normal"
+            app:tabSelectedTextColor="@color/colorWhite"
             app:tabTextAppearance="@style/TabLayoutAppearance"
-            app:tabTextColor="@color/colorTitleSecondary"/>
+            app:tabTextColor="@color/colorPrimaryLight"></android.support.design.widget.TabLayout>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -54,5 +56,13 @@
         android:layout_height="wrap_content"
         android:background="@color/colorTranparent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <include
+        layout="@layout/layout_playing_minimize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/corner_layout"
+        android:visibility="gone"></include>
 
 </android.support.design.widget.CoordinatorLayout>

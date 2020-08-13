@@ -14,7 +14,7 @@ import com.vmh.musicplayer.recent.FragmentRecent;
 
 public class PagerMainAdapter extends FragmentStatePagerAdapter {
     private static final int NUM_PAGES = 6;
-    private Fragment mFragmentListSong, mFragmentPlayList, mFragmentRecent, mFramentArtist, mFragmentAlbum, mFragmentFolder;
+    private Fragment mFragmentListSong, mFragmentPlaylist, mFragmentRecent, mFragmentArtist, mFragmentAlbum, mFragmentFolder;
     FragmentManager mFragmentManager;
 
     public PagerMainAdapter(FragmentManager fm) {
@@ -33,10 +33,10 @@ public class PagerMainAdapter extends FragmentStatePagerAdapter {
                 fragment = mFragmentListSong == null ? mFragmentListSong = FragmentListSong.newInstance() : mFragmentListSong;
                 break;
             case 2:
-                fragment = mFragmentPlayList == null ? mFragmentPlayList = new FragmentPlaylist() : mFragmentPlayList;
+                fragment = mFragmentPlaylist == null ? mFragmentPlaylist = new FragmentPlaylist() : mFragmentPlaylist;
                 break;
             case 3:
-                fragment = mFramentArtist == null ? mFramentArtist = new FragmentArtist() : mFramentArtist;
+                fragment = mFragmentArtist == null ? mFragmentArtist = new FragmentArtist() : mFragmentArtist;
                 break;
             case 4:
                 fragment = mFragmentAlbum == null ? mFragmentAlbum = new FragmentAlbum() : mFragmentAlbum;
@@ -59,5 +59,36 @@ public class PagerMainAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return null;
+    }
+
+    public Fragment getFragmentAtIndex(int index){
+        Fragment fragment = null;
+        switch (index) {
+            case 0:
+                fragment = mFragmentRecent;
+                break;
+            case 1:
+
+                fragment = mFragmentListSong;
+                break;
+            case 2:
+                fragment = mFragmentPlaylist;
+                break;
+            case 3:
+
+                fragment = mFragmentArtist;
+                break;
+            case 4:
+                fragment = mFragmentAlbum;
+
+                break;
+            case 5:
+                fragment = mFragmentFolder;
+                break;
+
+            default:
+                break;
+        }
+        return fragment;
     }
 }
