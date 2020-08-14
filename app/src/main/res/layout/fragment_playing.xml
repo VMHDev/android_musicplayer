@@ -10,10 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:scaleType="fitXY"
+        android:scaleType="fitXY" />
 
-        />
-    <!--android:src="@mipmap/music_circular_button_128"-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,10 +34,7 @@
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="top"
                 android:onClick="hidePlayActivity"
-                android:orientation="horizontal"
-
-                >
-
+                android:orientation="horizontal">
 
                 <ImageButton
                     android:layout_width="@dimen/image_icon_item"
@@ -54,7 +49,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     android:onClick="hidePlayActivity"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_chevron_left_black_52dp" />
+                    android:src="@drawable/ic_chevron_left_black" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -63,7 +58,6 @@
                     android:orientation="vertical">
 
                     <TextView
-
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_size_small"
@@ -71,10 +65,10 @@
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/text_size_large" />
 
-
                 </LinearLayout>
 
             </LinearLayout>
+
         </android.support.v7.widget.CardView>
 
         <LinearLayout
@@ -84,6 +78,7 @@
             android:layout_weight="3"
             android:orientation="vertical"
             android:weightSum="4">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -95,7 +90,6 @@
                     android:layout_height="320dp"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-
                     app:cardBackgroundColor="@color/colorBlackGlassLight"
                     app:cardCornerRadius="@dimen/border_radius_large"
                     app:cardElevation="@dimen/elevation_large"
@@ -107,10 +101,12 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-                        android:src="@mipmap/music_128" />
+                        android:src="@mipmap/ic_music_file" />
 
                 </android.support.v7.widget.CardView>
+
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -137,17 +133,11 @@
                     android:gravity="center"
                     android:text="Tên ca sĩ tại đây"
                     android:textColor="@color/colorTitleWhiteSecondary"
-                    android:textSize="@dimen/text_size_large"
-
-                    />
+                    android:textSize="@dimen/text_size_large" />
 
             </LinearLayout>
 
-
-
-
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -179,7 +169,6 @@
                     android:textColor="@color/colorTitleWhitePrimary" />
 
                 <SeekBar
-
                     android:id="@+id/sebDurationSongPlaying"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -196,10 +185,10 @@
                     android:minWidth="80dp"
                     android:text="69:96"
                     android:textColor="@color/colorTitleWhitePrimary" />
+
             </LinearLayout>
 
             <TableLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -223,7 +212,7 @@
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/ic_shuffle_black_32dp" />
+                        android:src="@drawable/ic_shuffle_black" />
 
                     <ImageButton
                         android:id="@+id/btnPrevSong"
@@ -236,7 +225,7 @@
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/ic_skip_previous_black_48dp" />
+                        android:src="@drawable/ic_skip_previous_black" />
 
                     <ImageButton
                         android:id="@+id/btnPlaySong"
@@ -248,10 +237,7 @@
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/ic_play_circle_outline_black_64dp"
-
-                        />
-
+                        android:src="@drawable/ic_play_circle_outline_black" />
 
                     <ImageButton
                         android:id="@+id/btnNextSong"
@@ -264,7 +250,7 @@
                         android:padding="@dimen/margin_size_small"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/ic_skip_next_black_48dp" />
+                        android:src="@drawable/ic_skip_next_black" />
 
                     <ImageButton
                         android:id="@+id/btnLoopType"
@@ -276,13 +262,16 @@
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:scaleType="center"
-                        android:src="@drawable/ic_repeat_one_black_32dp" />
+                        android:src="@drawable/ic_repeat_one_black" />
+
                 </TableRow>
+
             </TableLayout>
+
         </LinearLayout>
 
-
     </LinearLayout>
+
 </FrameLayout>
 
 

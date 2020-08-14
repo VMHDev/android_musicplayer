@@ -41,13 +41,11 @@ public class ListPlayingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         if (i == VIEW_TYPE_ITEM) {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_item_song_playing, viewGroup, false);
-//            ViewHolderRecycler viewHolder = new ViewHolderRecycler(view);
             return new ViewHolderRecycler(view);
         } else {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.progressbar_circle, viewGroup, false);
             return new LoadingViewHolder(view);
         }
-
     }
 
     @Override
@@ -57,7 +55,6 @@ public class ListPlayingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (viewHolder instanceof LoadingViewHolder) {
             showLoading((LoadingViewHolder) viewHolder, i);
         }
-
     }
 
     private void showSongItem(ViewHolderRecycler viewHolder, int position) {
@@ -68,12 +65,6 @@ public class ListPlayingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private void showLoading(LoadingViewHolder viewHolder, int position) {
 
     }
-//    @Override
-//    public void onBindViewHolder(@NonNull ViewHolderRecycler viewHolderRecycler, int i) {
-//        SongModel songModel = mListSong.get(i);
-//        viewHolderRecycler.bindContent(songModel);
-//    }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -95,15 +86,12 @@ public class ListPlayingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView album;
         TextView artist;
         TextView duration;
-        //        ImageView imageView;
         ImageView imgStatusPlaying;
 
         public ViewHolderRecycler(@NonNull View itemView) {
             super(itemView);
             this.titleSong = (TextView) itemView.findViewById(R.id.txtTitle);
-//            this.album=album;
             this.artist = (TextView) itemView.findViewById(R.id.txtArtist);
-//            this.imageView = (ImageView) itemView.findViewById(R.id.imgSong);
             this.duration = (TextView) itemView.findViewById(R.id.txtDuration);
             this.imgStatusPlaying = (ImageView) itemView.findViewById(R.id.imgStatusPlaying);
         }
@@ -124,27 +112,7 @@ public class ListPlayingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     this.duration.setVisibility(View.VISIBLE);
                 }
             }
-
-//            if (imageView.getResources()==null){
-//            if (cancelPotentialWork(songModel.getPath(), imageView)) {
-//                final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-//                final AsyncDrawable asyncDrawable = new AsyncDrawable(null, task);
-//                imageView.setImageDrawable(asyncDrawable);
-//                task.execute(songModel.getPath());
-//            }
-//            }
-
-//            new BitmapWorkerTask(imageView).execute(songModel.getPath());
-
-//            if (this.imageView.getDrawable() == null) {
-//            ParamImageThread paramImageThread = new ParamImageThread(this.imageView, songModel.getPath());
-//            new loadImageFromStorage().execute(paramImageThread);
-//            }
-
-
         }
-
-
     }
 
     private class LoadingViewHolder extends RecyclerView.ViewHolder {
@@ -161,15 +129,12 @@ public class ListPlayingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskWeakReference;
 
         public AsyncDrawable(Bitmap bitmap, BitmapWorkerTask bitmapWorkerTask) {
-//            super(resources, bitmap);
             bitmapWorkerTaskWeakReference = new WeakReference<BitmapWorkerTask>(bitmapWorkerTask);
-
         }
 
         public BitmapWorkerTask getBitmapWorkerTask() {
             return bitmapWorkerTaskWeakReference.get();
         }
-
     }
 
     private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
@@ -197,7 +162,6 @@ public class ListPlayingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
         }
         return true;
-
     }
 
     private static class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
@@ -209,14 +173,12 @@ public class ListPlayingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             this.imageViewWeakReference = new WeakReference<ImageView>(imageView);
         }
 
-
         @Override
         protected Bitmap doInBackground(String... strings) {
             pathImage = strings[0];
-            Bitmap bitmap = ImageHelper.getBitmapFromPath(pathImage, R.mipmap.music_file_128);
+            Bitmap bitmap = ImageHelper.getBitmapFromPath(pathImage, R.mipmap.ic_music_file);
             mBitmap = bitmap;
             return bitmap;
-
         }
 
         @Override

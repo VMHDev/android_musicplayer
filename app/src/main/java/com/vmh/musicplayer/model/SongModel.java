@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.vmh.musicplayer.DatabaseHelper;
 import com.vmh.musicplayer.database.DatabaseManager;
 
 import java.io.File;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 
 public class SongModel implements Serializable {
     public static final String TABLE_NAME = "songs";
-
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_SONG_ID = "song_id";
     public static final String COLUMN_TITLE = "title";
@@ -105,7 +103,6 @@ public class SongModel implements Serializable {
         this.duration = duration;
     }
 
-
     public int getId() {
         return id;
     }
@@ -153,7 +150,7 @@ public class SongModel implements Serializable {
 
             while (c.moveToNext()) {// && count++<debugLoop
                 count++;
-//                Log.d(TAG, "getAllAudioFromDevice: " + count);
+
                 SongModel songModel = new SongModel();
                 String path = c.getString(0);//c.getColumnIndex(MediaStore.Audio.AudioColumns.DATA)
                 String name = c.getString(1);//c.getColumnIndex(MediaStore.Audio.AudioColumns.TITLE)
@@ -165,19 +162,7 @@ public class SongModel implements Serializable {
                 Log.d(TAG, "getAllAudioFromDevice: ALBUM ID" + albumId);
                 String parentPath = new File(path).getParent();
                 String folder = parentPath.substring(parentPath.lastIndexOf('/') + 1);
-//                MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-//                mediaMetadataRetriever.setDataSource(path);
-//                InputStream inputStream;
-//                Bitmap bitmap;
-//
-//
-//                if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-//                    inputStream = new ByteArrayInputStream(mediaMetadataRetriever.getEmbeddedPicture());
-//                    mediaMetadataRetriever.release();
-//                    bitmap = BitmapFactory.decodeStream(inputStream);
-//                } else {
-//                    bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.musical_note_light_64);
-//                }
+
                 songModel.setTitle(name);
                 songModel.setAlbum(album);
                 songModel.setArtist(artist);
@@ -187,8 +172,6 @@ public class SongModel implements Serializable {
                 songModel.setSongId(songId);
                 songModel.setFolder(folder);
                 songModel.setAlbumId(albumId);
-//                Log.e("Name :" + name, " Album :" + album);
-//                Log.e("Path :" + path, " artist :" + artist);
 
                 tempAudioList.add(songModel);
             }
@@ -222,12 +205,6 @@ public class SongModel implements Serializable {
 
         finalTimerString = finalTimerString + minutes + ":" + secondsString;
 
-        //      return  String.format("%02d Min, %02d Sec",
-        //                TimeUnit.MILLISECONDS.toMinutes(milliseconds),
-        //                TimeUnit.MILLISECONDS.toSeconds(milliseconds) -
-        //                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliseconds)));
-
-        // return timer string
         return finalTimerString;
     }
 
@@ -246,7 +223,6 @@ public class SongModel implements Serializable {
             contentValues.put(SongModel.COLUMN_PATH, songModel.getPath());
             contentValues.put(SongModel.COLUMN_ALBUM_ID, songModel.getSongId());
             long id = database.insert(SongModel.TABLE_NAME, null, contentValues);
-//            database.close();
             return id;
         }
         return 0;
@@ -260,18 +236,15 @@ public class SongModel implements Serializable {
     public static boolean isSongExsist(DatabaseManager databaseManager, SongModel song) {
         SQLiteDatabase db = databaseManager.getReadableDatabase();
         boolean result = false;
-        String query = MessageFormat.format("SELECT {0} FROM {1} WHERE {2}={3} ",
-                new String[]{SongModel.COLUMN_ID, SongModel.TABLE_NAME, SongModel.COLUMN_SONG_ID, String.valueOf(song.getSongId())});
+        String query = MessageFormat.format("SELECT {0} FROM {1} WHERE {2}={3} ", SongModel.COLUMN_ID, SongModel.TABLE_NAME, SongModel.COLUMN_SONG_ID, String.valueOf(song.getSongId()));
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             result = true;
         }
-        //databaseManager.closeDatabase();
         return result;
     }
 
     public static SongModel getSongFromSongId(DatabaseManager databaseManager, int id) {
-        // get readable database as we are not inserting anything
         SQLiteDatabase db = databaseManager.getReadableDatabase();
         String[] projection = {
                 SongModel.COLUMN_ID,
@@ -286,7 +259,6 @@ public class SongModel implements Serializable {
         };
         String sortOrder = SongModel.COLUMN_ID + " ASC";
         String selection = SongModel.COLUMN_SONG_ID + " =  " + id;// ;
-
 
         Cursor cursor = db.query(SongModel.TABLE_NAME,
                 projection,
@@ -304,14 +276,11 @@ public class SongModel implements Serializable {
             songModel.setDuration(cursor.getLong(cursor.getColumnIndex(SongModel.COLUMN_DURATION)));
             songModel.setPath(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_PATH)));
             songModel.setAlbumId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_ALBUM_ID)));
-            //databaseManager.closeDatabase();
 
             return songModel;
         } else {
             return null;
         }
-        //Log.d(TAG, "getSong: " + songModel.getSongId() + " _ " + songModel.getTitle() + " _ " + songModel.getAlbum());
-        // close the db connection
     }
 
 
@@ -344,7 +313,6 @@ public class SongModel implements Serializable {
             } while (cursor.moveToNext());
 
         }
-        //databaseManager.closeDatabase();
         return songModelList;
     }
 
@@ -377,7 +345,6 @@ public class SongModel implements Serializable {
             } while (cursor.moveToNext());
 
         }
-        //databaseManager.closeDatabase();
         return songModelList;
     }
 

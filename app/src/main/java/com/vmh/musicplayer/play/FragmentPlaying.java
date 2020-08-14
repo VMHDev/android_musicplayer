@@ -48,16 +48,17 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
     private SongModel mSongPlaying;
 
     public static final String SENDER = "FRAGMENT_PLAYING";
-    private static final String TAG = "FragmentPlaying";
+    private static final String TAG = "FRAGMENT_PLAYING";
+
     private static final ArrayList<Integer> arrLoopTypeValue = new ArrayList<>(Arrays.asList(
             PlayService.NONE_LOOP,
             PlayService.ALL_LOOP,
             PlayService.ONE_LOOP));
-    private static final ArrayList<Integer> arrLoopTypeImage = new ArrayList<>(Arrays.asList(
-            R.drawable.ic_repeat_none_black_32dp,
-            R.drawable.ic_repeat_black_32dp,
-            R.drawable.ic_repeat_one_black_32dp));
 
+    private static final ArrayList<Integer> arrLoopTypeImage = new ArrayList<>(Arrays.asList(
+            R.drawable.ic_repeat_none_black,
+            R.drawable.ic_repeat_black,
+            R.drawable.ic_repeat_one_black));
 
     public FragmentPlaying() {
 
@@ -69,10 +70,8 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
         if (mContext == null) {
             mContext = getActivity();
             mPlayActivity = (PlayActivity) getActivity();
-
         }
-//        Bundle bundle = getArguments();
-//        mSongPlaying = (SongModel) bundle.getSerializable("PLAY_SONG");
+
         mSongPlaying = PlayService.getCurrentSongPlaying();
         mPlayService = PlayService.newInstance();
     }
@@ -80,7 +79,6 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         mViewGroupMain = (ViewGroup) inflater.inflate(R.layout.fragment_playing, container, false);
         return mViewGroupMain;
     }
@@ -89,6 +87,7 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         mTableLayoutControlPlaying = mViewGroupMain.findViewById(R.id.layoutControlPlaying);
         mImageButtonPlaySong = mViewGroupMain.findViewById(R.id.btnPlaySong);
         mImageButtonPrevSong = mViewGroupMain.findViewById(R.id.btnPrevSong);
@@ -112,7 +111,6 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
                         arrLoopTypeImage.get(
                                 arrLoopTypeValue.indexOf(PlayService.getLoopType()))));
 
-
         mSebDurationSongPlaying.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -122,10 +120,7 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
                     if (!PlayService.isPlaying()) {
                         mPlayActivity.controlSong(SENDER, null, PlayService.ACTION_RESUME);
                         setButtonPause();
-                        //mImageButtonPlaySong.setImageDrawable(mPlayActivity.getDrawable(R.drawable.ic_pause_black_70dp));
-
                     }
-
                 }
             }
 
@@ -146,7 +141,7 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
     private void setResourceImagePlaying() {
         Bitmap bitmapPlaying = ImageHelper.getBitmapFromPath(mSongPlaying.getPath());
         if (bitmapPlaying == null) {
-            bitmapPlaying = ImageHelper.drawableToBitmap(R.mipmap.music_128);
+            bitmapPlaying = ImageHelper.drawableToBitmap(R.mipmap.ic_music_file);
             mImagePlaying.setScaleType(ImageView.ScaleType.CENTER);
         } else {
             mImagePlaying.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -158,7 +153,6 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -168,20 +162,12 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
 
         if (PlayService.isPlaying() && mSongPlaying.getSongId() != PlayService.getCurrentSongPlaying().getSongId()) {
             Log.d(TAG, "onResume: SERVICE " + PlayService.getCurrentSongPlaying().getTitle() + " PLAY " + mSongPlaying.getTitle());
-//            mSongPlaying=PlayService.getCurrentSongPlaying();
             mPlayActivity.controlSong(SENDER, mSongPlaying, PlayService.ACTION_PLAY);
             updateControlPlaying(mSongPlaying);
-//            mPlayActivity.updateControlPlaying(SENDER, mSongPlaying);
         }
 
         updateSeekbar(PlayService.getCurrentDuration());
         Log.d(TAG, "onResume: " + PlayService.getCurrentDuration());
-//        mPlayActivity.controlSong(SENDER, null, PlayService.ACTION_RESUME);
-//        if (mSongPlaying != null && PlayService.getCurrentSongPlaying() != null) {
-//            if (mSongPlaying.getSongId() == PlayService.getCurrentSongPlaying().getSongId()) {
-//                updateControlPlaying(mSongPlaying);
-//            }
-//        }
         updateControlPlaying(mSongPlaying);
         updateButtonPlay();
     }
@@ -205,7 +191,6 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
         mTxtDurationSongPlaying.setText(SongModel.formateMilliSeccond(songModel.getDuration()));
         mSebDurationSongPlaying.setMax(mSongPlaying.getDuration().intValue() / 1000);
         setResourceImagePlaying();
-        //
     }
 
     @Override
@@ -220,23 +205,19 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
         Log.d(TAG, "updateButtonPlay: " + PlayService.isPlaying());
         if (PlayService.isPlaying()) {
             setButtonPause();
-//            mImageButtonPlaySong.setImageDrawable(mPlayActivity.getDrawable(R.drawable.ic_pause_black_70dp));
         } else {
             setButtonPlay();
-//            mImageButtonPlaySong.setImageDrawable(mPlayActivity.getDrawable(R.drawable.ic_play_arrow_black_70dp));
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setButtonPlay() {
-        mImageButtonPlaySong.setImageDrawable(mPlayActivity.getDrawable(R.drawable.ic_play_circle_outline_black_64dp));
-
+        mImageButtonPlaySong.setImageDrawable(mPlayActivity.getDrawable(R.drawable.ic_play_circle_outline_black));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setButtonPause() {
-        mImageButtonPlaySong.setImageDrawable(mPlayActivity.getDrawable(R.drawable.ic_pause_circle_outline_black_64dp));
-
+        mImageButtonPlaySong.setImageDrawable(mPlayActivity.getDrawable(R.drawable.ic_pause_circle_outline_black));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -244,43 +225,39 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnPlaySong:
-                Toast.makeText(mContext, "PLAY CLICK", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onClick: DURATION PLAY" + PlayService.getCurrentDuration());
                 if (PlayService.isPlaying()) {// song is playing then stop
+                    Toast.makeText(mContext, "PAUSE", Toast.LENGTH_SHORT).show();
                     mPlayActivity.controlSong(SENDER, null, PlayService.ACTION_PAUSE);
                     setButtonPlay();
-//                    mPlayService.pause();
                 } else if (PlayService.isPause()) { //resume
+                    Toast.makeText(mContext, "PLAY", Toast.LENGTH_SHORT).show();
                     mPlayActivity.controlSong(SENDER, null, PlayService.ACTION_RESUME);
                     setButtonPause();
-//                    mPlayService.resurme();
-//                    mImageButtonPlaySong.setImageDrawable(mPlayActivity.getDrawable(R.drawable.ic_pause_circle_outline_black_64dp));
                 } else {
                     mPlayActivity.controlSong(SENDER, PlayService.getCurrentSongPlaying(), PlayService.ACTION_PLAY);
                     setButtonPause();
-//                    mImageButtonPlaySong.setImageDrawable(mPlayActivity.getDrawable(R.drawable.ic_pause_circle_outline_black_64dp));
                 }
                 break;
             case R.id.btnPrevSong:
                 mPlayActivity.controlSong(SENDER, null, PlayService.ACTION_PREV);
-//                mPlayService.prev(PlayService.ACTION_FROM_USER);
+                //Toast.makeText(mContext, "PREVIOUS", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnNextSong:
-//                mPlayService.next(PlayService.ACTION_FROM_USER);
                 mPlayActivity.controlSong(SENDER, null, PlayService.ACTION_NEXT);
+                //Toast.makeText(mContext, "NEXT", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnLoopType:
                 int currentLoopType = PlayService.getLoopType();
                 int indexLoopType = arrLoopTypeValue.indexOf(currentLoopType);
-//                Log.d(TAG, "onClick: TYPE LOOP " + currentLoopType + "__" + indexLoopType);
                 indexLoopType = indexLoopType >= arrLoopTypeValue.size() - 1 ? 0 : indexLoopType + 1;
                 currentLoopType = arrLoopTypeValue.get(indexLoopType);
                 PlayService.setLoopType(currentLoopType);
-//                Log.d(TAG, "onClick: TYPE LOOP " + currentLoopType + "__" + indexLoopType);
+
                 mImageButtonLoopType.setImageDrawable(
                         mPlayActivity.getDrawable(
                                 arrLoopTypeImage.get(indexLoopType)));
-
+                //Toast.makeText(mContext, "LOOP", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;

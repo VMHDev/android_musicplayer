@@ -1,7 +1,9 @@
 package com.vmh.musicplayer.play;
 
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.CountDownTimer;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.vmh.musicplayer.MainActivity;
@@ -41,8 +43,8 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
 
     private static int loopType = ALL_LOOP;
     public static boolean Shuffle;
-    private static final String TAG = "PlayService";
-    public static final String SENDER = "PLAY_CENTER";
+    private static final String TAG = "PLAY_SERVICE";
+    public static final String SENDER = "PLAY_SERVICE";
 
     public static PlayService newInstance() {
         if (mPlayService == null) {
@@ -53,7 +55,6 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
         return mPlayService;
     }
 
-
     public static int getLoopType() {
         return loopType;
     }
@@ -62,12 +63,7 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
         PlayService.loopType = loopType;
     }
 
-
     public void play(final SongModel songModel) {
-//        Log.d(TAG, "play: "+songModel.getPath());
-//        Log.d(TAG, "play: "+ Uri.parse(songModel.getPath()));
-//        File path = Environment.getExternalStorageDirectory();
-//        Log.d(TAG, "play: "+ path+songModel.getPath());
         mIsPause = false;
         try {
             if (mOldSongPlaying == null) {
@@ -80,9 +76,8 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
             mMediaPlayer.setDataSource(songModel.getPath());
             mMediaPlayer.setOnPreparedListener(this);
             mMediaPlayer.setOnCompletionListener(this);
-
             mMediaPlayer.prepareAsync();
-//            mMediaPlayer.start();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,7 +91,6 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
 
             }
         }).start();
-
     }
 
     public void pause() {
@@ -113,9 +107,9 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
         } else {
             Log.d(TAG, "resurme: NOT RESUME SONG ");
         }
-
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void next(int actionFrom) {
         mIsPause = false;
         resetMediaPlayer();
@@ -143,8 +137,9 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
             }
         }
 
-        mCurrentSongPlaying = mSongPlayingList.get(mCurrentIndexSong); //SongModel.getSongFromSongId(mDatabaseManager, mPlayingList.get(mCurrentIndexSong).getSongId());
+        mCurrentSongPlaying = mSongPlayingList.get(mCurrentIndexSong);
         play(mCurrentSongPlaying);
+
         MainActivity.getMainActivity().togglePlayingMinimize(SENDER);
         if (PlayActivity.getActivity() != null) {
             PlayActivity.getActivity().updateControlPlaying(SENDER, mCurrentSongPlaying);
@@ -179,8 +174,9 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
         } else {
             mCurrentIndexSong--;
         }
-        mCurrentSongPlaying = mSongPlayingList.get(mCurrentIndexSong);//SongModel.getSongFromSongId(mDatabaseManager, mPlayingList.get(mCurrentIndexSong).getSongId());
+        mCurrentSongPlaying = mSongPlayingList.get(mCurrentIndexSong);
         play(mCurrentSongPlaying);
+
         MainActivity.getMainActivity().togglePlayingMinimize(SENDER);
         if (PlayActivity.getActivity() != null) {
             PlayActivity.getActivity().updateControlPlaying(SENDER, mCurrentSongPlaying);
@@ -188,7 +184,6 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
     }
 
     public static int addSongsToPlayingList(ArrayList<SongModel> songs) {
-//        PlayModel.clearPlayingList();
         if (songs == null)
             return -1;
         for (SongModel song : songs) {
@@ -214,7 +209,6 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
         return mPlayingList.size();
     }
 
-
     public ArrayList<PlayModel> getPlayModelsList() {
         return mPlayingList;
     }
@@ -235,19 +229,13 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
         return mCurrentSongPlaying;
     }
 
-
     public static void revertListSongPlaying() {
         mCurrentSongPlaying = PlayModel.getSongIsPlaying();
         updatePlayingList();
     }
 
     public void updateDuration(int progress) {
-
         mMediaPlayer.seekTo(progress * 1000);
-//        if (!mMediaPlayer.isPlaying()) {
-//            mMediaPlayer.start();
-//            mPlayActivity.updateControlPlaying(SENDER, mCurrentSongPlaying);
-//        }
     }
 
     @Override
@@ -270,7 +258,6 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
         if (PlayActivity.getActivity() != null) {
             PlayActivity.getActivity().updateSeekbar(sender, duration);
         }
-
     }
 
     @Override
@@ -291,10 +278,9 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
                 }
             }
         }
-
-
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onPrepared(MediaPlayer mp) {
         if (!mMediaPlayer.isPlaying()) {
@@ -304,60 +290,26 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
                         Log.d(TAG, "onTick: " + millisUntilFinished + " " + mCurrentSongPlaying.getTitle());
                         updateSeekbar(SENDER, mMediaPlayer.getCurrentPosition());
                     }
-
                 }
 
                 public void onFinish() {
                     Log.d(TAG, "onFinish: " + mMediaPlayer.getCurrentPosition());
-//                                        mMediaPlayer.stop();
-
                 }
             }.start();
-
         }
         mp.start();
         if (PlayActivity.getActivity() != null) {
             PlayActivity.getActivity().updateButtonPlay(SENDER);
         }
-
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onCompletion(MediaPlayer mp) {
         Log.d(TAG, "onCompletion: NEXT -> ");
         next(ACTION_FROM_SYSTEM);
     }
 
-    //    @Override
-//    public void playSong(SongModel song) {
-//        play(song);
-//    }
-//
-//    @Override
-//    public void nextSong() {
-//        next(ACTION_FROM_SYSTEM);
-//    }
-//
-//    @Override
-//    public void prevSong() {
-//        prev(ACTION_FROM_SYSTEM);
-//    }
-//
-//    @Override
-//    public void pauseSong() {
-//
-//        mMediaPlayer.pause();
-//    }
-//
-//    @Override
-//    public void stopSong() {
-//        mMediaPlayer.seekTo(0);
-//        mMediaPlayer.stop();
-//
-//    }
-//
-//
     public void initListPlaying(final ArrayList<SongModel> listPlaying) {
         PlayModel.clearPlayingList();
         PlayModel.createPlaylistFromSongs(listPlaying);
@@ -381,5 +333,4 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
     public static SongModel getSongIsPlaying() {
         return PlayModel.getSongIsPlaying();
     }
-
 }

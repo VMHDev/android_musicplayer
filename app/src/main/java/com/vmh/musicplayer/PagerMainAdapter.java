@@ -75,7 +75,6 @@ public class PagerMainAdapter extends FragmentStatePagerAdapter {
                 fragment = mFragmentPlaylist;
                 break;
             case 3:
-
                 fragment = mFragmentArtist;
                 break;
             case 4:

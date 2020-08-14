@@ -13,7 +13,6 @@ public class FragmentPlayAdapter extends FragmentStatePagerAdapter {
 
     public FragmentPlayAdapter(FragmentManager fm) {
         super(fm);
-
     }
 
     private static Fragment mFragmentListPlaying, mFragmentPlaying;
@@ -25,15 +24,12 @@ public class FragmentPlayAdapter extends FragmentStatePagerAdapter {
             case 0:
                 mFragmentListPlaying = FragmentListPlaying.newInstance();
                 fragment = mFragmentListPlaying;
-//                Bundle bundle=new Bundle();
-//                bundle.putBoolean("PLAY_FISR",);
-//                fragment.setArguments(bundle);
                 break;
             case 1:
                 mFragmentPlaying = new FragmentPlaying();
                 fragment = mFragmentPlaying;
-                Bundle bundle=new Bundle();
-                bundle.putSerializable("PLAY_SONG",mSongPlaying);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("PLAY_SONG", mSongPlaying);
                 fragment.setArguments(bundle);
                 break;
             default:
@@ -50,7 +46,8 @@ public class FragmentPlayAdapter extends FragmentStatePagerAdapter {
     public FragmentPlaying getFragmentPlaying() {
         return (FragmentPlaying) mFragmentPlaying;
     }
-    public FragmentListPlaying getFragmentListPlaying(){
+
+    public FragmentListPlaying getFragmentListPlaying() {
         return (FragmentListPlaying) mFragmentListPlaying;
     }
 }

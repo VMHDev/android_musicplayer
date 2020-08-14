@@ -25,9 +25,9 @@
     <dimen name="tab_text_size">18dp</dimen>
 
     <dimen name="image_optiton_sheet">64dp</dimen>
+    <dimen name="image_card_item">48dp</dimen>
     <dimen name="image_card_item_playlist">64dp</dimen>
     <dimen name="image_icon_item">48dp</dimen>
-    <dimen name="image_card_item">48dp</dimen>
 
     <dimen name="max_height_dialog">360dp</dimen>
 </resources>

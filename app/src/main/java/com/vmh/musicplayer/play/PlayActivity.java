@@ -25,9 +25,6 @@ public class PlayActivity extends AppCompatActivity implements PlayInterface {
 
     private ViewPager mPager;
 
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
     private DatabaseManager mDatabaseManager;
     private CoordinatorLayout mLayoutPlay;
     private PagerAdapter mPagerAdapter;
@@ -36,9 +33,9 @@ public class PlayActivity extends AppCompatActivity implements PlayInterface {
     private MainActivity mMainActivity;
     private ArrayList<SongModel> mPlayList;
 
-    private static final String TAG = "PlayActivity";
-    public static final String EXTRA_PLAYING_LIST = "EXTRA_PLAYING_LIST";
     public static final String SENDER = "PLAY_ACTIVITY";
+    private static final String TAG = "PLAY_ACTIVITY";
+    public static final String EXTRA_PLAYING_LIST = "EXTRA_PLAYING_LIST";
 
     public static final int TYPE_SHOW_NEW = 1;
     public static final int TYPE_SHOW_RESUME = 2;
@@ -61,9 +58,6 @@ public class PlayActivity extends AppCompatActivity implements PlayInterface {
         Utility.setTranslucentStatusBar(PlayActivity.this);
         mLayoutPlay.setPadding(0, Utility.getStatusbarHeight(this), 0, 0);
 
-//        mLayoutPlay.setBackground(ImageHelper.getMainBackgroundDrawable());
-
-
         mDatabaseManager = DatabaseManager.newInstance(getApplicationContext());
         mPlayActivity = this;
         mPlayService = PlayService.newInstance();
@@ -81,9 +75,7 @@ public class PlayActivity extends AppCompatActivity implements PlayInterface {
 
             @Override
             public void onPageSelected(int i) {
-//                if (i==0){//Page list playing
-//                    ((FragmentPlayAdapter) mPagerAdapter).getFragmentListPlaying().updateListPlaying();
-//                }
+
             }
 
             @Override
@@ -91,66 +83,7 @@ public class PlayActivity extends AppCompatActivity implements PlayInterface {
 
             }
         });
-
-//        Intent intent = getIntent();
-//        Bundle bundle = intent.getExtras();
-//
-//
-//        int typeShow = -1;
-//        typeShow = bundle.getInt("TYPE_SHOW");
-//        Log.d(TAG, "onCreate: TYPE SHOW" + typeShow);
-//        if (typeShow == TYPE_SHOW_NEW) {
-//            if (bundle.getSerializable("PLAY_LIST") != null) {
-//                mPlayList = (ArrayList<SongModel>) bundle.getSerializable("PLAY_LIST");
-//            } else {
-//                mPlayList = (ArrayList<SongModel>) intent.getSerializableExtra(PlayActivity.EXTRA_PLAYING_LIST);
-//            }
-//            Log.d(TAG, "onCreate: " + "PLAY LIST " + mPlayList.size());
-//            if (bundle.getSerializable("PLAY_SONG") != null) {
-//                mSongPlaying = (SongModel) bundle.getSerializable("PLAY_SONG");
-//            } else {
-//                if (mPlayList.size() > 0) {
-//                    mSongPlaying = mPlayList.get(0);
-//                }
-//            }
-//            new InitPlaylist().execute(mPlayList);
-//        } else if (typeShow == TYPE_SHOW_RESUME) {
-//            Log.d(TAG, "onCreate: RESUME " + PlayService.getCurrentSongPlaying());
-//            mSongPlaying = PlayService.getCurrentSongPlaying();
-//            mPagerAdapter = new FragmentPlayAdapter(getSupportFragmentManager(), mSongPlaying);
-//            mPager.setAdapter(mPagerAdapter);
-//            ((FragmentPlayAdapter) mPagerAdapter).getFragmentPlaying().updateButtonPlay();
-//            mPager.setCurrentItem(1);
-//        }
-
-
-//        Log.d(TAG, "onCreate: " + "PLAY SONG " + mSongPlaying.getTitle());
-
-//        TextView textView=findViewById(R.id.txtTest);
-//        Log.d(TAG, "onCreate: " + songs.size());
-//        for (SongModel song : songs
-//        ) {
-//            Log.d(TAG, "onCreate: " + song.getSongId());
-//        }
-//        Toast.makeText(PlayActivity.this, songs.size()+"", Toast.LENGTH_SHORT).show();
-//        mPlayService = PlayService.newInstance(PlayActivity.this.getApplicationContext(), this);
-        // Instantiate a ViewPager and a PagerAdapter.
-
-
-//        if (PlayService.getCurrentSongPlaying() != null) {
-//            Log.d(TAG, "onCreate: SONG PLAYING " + PlayService.getCurrentSongPlaying().getTitle()
-//                    + " mSONGPLAYING " + mSongPlaying.getTitle());
-//        }
-
-        //set animation for slide page
-//        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
-//        Log.d(TAG, "onCreate: SAVE INSTANCE STATE" + savedInstanceState);
-//        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-////        int defaultValue = getResources().getInteger("TEST");
-//        int highScore = sharedPref.getInt("TEST", 0);
-//        Log.d(TAG, "onCreate: TEST SHARE "+ highScore);
     }
-
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -164,7 +97,6 @@ public class PlayActivity extends AppCompatActivity implements PlayInterface {
         outState.putInt("tabIndex", 1);
     }
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -172,41 +104,21 @@ public class PlayActivity extends AppCompatActivity implements PlayInterface {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("TEST", 1);
         editor.commit();
-
-
-//        super.onPause();
-//        if (mPager.getCurrentItem() == 0) {
-//            // If the user is currently looking at the first step, allow the system to handle the
-//            // Back button. This calls finish() on this activity and pops the back stack.
-//            super.onBackPressed();
-//        } else {
-//            // Otherwise, select the previous step.
-//            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-//        }
     }
 
     public void hidePlayActivity(View view) {
-//        Intent i=new Intent(this, MainActivity.class);
-//        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        startActivity(i);
         onBackPressed();
-//        finish();
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void controlSong(String sender, SongModel songModel, int action) {
-
         switch (action) {
             case PlayService.ACTION_PLAY:
-//                if (sender.equals(FragmentListPlaying.SENDER)) {
-//
-//                }
                 Log.d(TAG, "controlSong: PLAY " + sender + " " + songModel.getTitle());
                 mPager.setCurrentItem(1);
                 mPlayService.play(songModel);
                 Log.d(TAG, "controlSong: ");
-
                 break;
             case PlayService.ACTION_PAUSE:
                 mPlayService.pause();
@@ -240,7 +152,6 @@ public class PlayActivity extends AppCompatActivity implements PlayInterface {
         if (fragmentPlaying != null) {
             fragmentPlaying.updateControlPlaying(songModel);
         }
-//        ((FragmentPlayAdapter) mPagerAdapter).getFragmentPlaying().updateControlPlaying(songModel);
         MainActivity.getMainActivity().togglePlayingMinimize(sender);
     }
 
@@ -264,7 +175,6 @@ public class PlayActivity extends AppCompatActivity implements PlayInterface {
         if (fragmentPlaying != null) {
             fragmentPlaying.updateButtonPlay();
         }
-//        ((FragmentPlayAdapter) mPagerAdapter).getFragmentPlaying().updateButtonPlay();
     }
 
     @Override

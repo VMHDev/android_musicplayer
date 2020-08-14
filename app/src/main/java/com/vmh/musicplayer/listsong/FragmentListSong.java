@@ -25,7 +25,6 @@ import com.vmh.musicplayer.callbacks.FragmentCallbacks;
 import com.vmh.musicplayer.database.DatabaseManager;
 import com.vmh.musicplayer.model.SongModel;
 import com.vmh.musicplayer.play.PlayService;
-import com.vmh.musicplayer.playlist.BottomSheetOptionSong;
 import com.vmh.musicplayer.playlist.FragmentPlaylist;
 
 import java.util.ArrayList;
@@ -154,16 +153,7 @@ public class FragmentListSong extends Fragment implements FragmentCallbacks, Rec
             }
         }).start();
 
-        _mainActivity.playSongsFromFragmentListToMain(FragmentPlaylist.SENDER);
-    }
-
-    @Override
-    public void onLongItemClick(View view, int position) {
-        Toast.makeText(_context, "LONG CLICK ITEM SONG" + position, Toast.LENGTH_SHORT).show();
-        final SongModel songPlay = _listSong.get(position);
-        BottomSheetOptionSong bottomSheetDialogFragment = new BottomSheetOptionSong(songPlay);
-        bottomSheetDialogFragment.show(_mainActivity.getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
-
+        _mainActivity.playSongsFromFragmentListToMain();
     }
 
     private class loadImageFromStorage extends AsyncTask<Void, Integer, ArrayList<SongModel>> {

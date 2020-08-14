@@ -16,6 +16,4 @@
     <color name="colorBlackGlassLight">#10000000</color>
 
     <color name="colorTranparent">#00FFFFFF</color>
-
-    <color name="colorBgPrimaryTranslucent">#FF263238</color>
 </resources>

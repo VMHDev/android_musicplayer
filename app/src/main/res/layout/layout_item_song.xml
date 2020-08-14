@@ -47,7 +47,7 @@
                         android:layout_height="@dimen/image_card_item"
                         android:adjustViewBounds="true"
                         android:scaleType="centerCrop"
-                        tools:srcCompat="@mipmap/music_128" />
+                        tools:srcCompat="@mipmap/ic_music_file" />
 
                 </android.support.v7.widget.CardView>
 
@@ -68,7 +68,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
-                            android:src="@drawable/ic_equalizer_black_24dp"
+                            android:src="@drawable/ic_equalizer_black"
                             android:visibility="gone" />
 
                         <TextView
@@ -88,14 +88,11 @@
                         android:id="@+id/txtArtist"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ca sĩ"
                         android:layout_gravity="left"
+                        android:text="Ca sĩ"
                         android:textColor="@color/colorTitleWhiteSecondary"
-                        android:textSize="@dimen/text_size_small"
-
-                        />
+                        android:textSize="@dimen/text_size_small" />
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_gravity="center"
@@ -121,7 +118,7 @@
                         android:clickable="true"
                         android:foreground="?attr/selectableItemBackground"
                         android:padding="@dimen/margin_size_xsmall"
-                        android:src="@drawable/ic_more_vert_black_24dp" />
+                        android:src="@drawable/ic_more_vert_black" />
 
                 </LinearLayout>
 
@@ -130,6 +127,5 @@
         </TableLayout>
 
     </android.support.v7.widget.CardView>
-
 
 </LinearLayout>

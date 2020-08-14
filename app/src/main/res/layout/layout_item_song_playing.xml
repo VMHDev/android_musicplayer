@@ -8,13 +8,9 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    android:orientation="vertical"
+    android:orientation="vertical">
 
-    >
-    <!--android:clickable="true"-->
-    <!--android:foreground="?android:attr/selectableItemBackground"-->
     <android.support.v7.widget.CardView
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -23,10 +19,8 @@
         app:cardElevation="0dp"
         app:contentPadding="@dimen/margin_size_snormal"
         card_view:cardBackgroundColor="@color/colorBlackGlassLight"
-        card_view:cardPreventCornerOverlap="false"
+        card_view:cardPreventCornerOverlap="false">
 
-        >
-        <!--card_view:cardCornerRadius="@dimen/border_radius_large"-->
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +29,6 @@
             android:stretchColumns="0">
 
             <TableRow>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -49,7 +42,6 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-
                         <TextView
                             android:id="@+id/txtTitle"
                             android:layout_width="match_parent"
@@ -59,8 +51,8 @@
                             android:textColor="@color/colorTitleWhitePrimary"
                             android:textSize="@dimen/text_size_normal"
                             android:textStyle="bold" />
-                    </LinearLayout>
 
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/txtArtist"
@@ -68,34 +60,21 @@
                         android:layout_height="wrap_content"
                         android:text="Ca sĩ"
                         android:textColor="@color/colorTitleWhiteSecondary"
-                        android:textSize="@dimen/text_size_small"
+                        android:textSize="@dimen/text_size_small" />
 
-                        />
-
-
-                    <!--<TextView-->
-                    <!--android:id="@+id/txtAlbum"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Album"-->
-                    <!--android:textSize="14sp"-->
-                    <!--android:textColor="@color/colorWhite"-->
-                    <!--/>-->
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_gravity="center_horizontal"
-                    android:paddingHorizontal="@dimen/margin_size_small"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/margin_size_small">
 
                     <ImageView
                         android:id="@+id/imgStatusPlaying"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|right"
-
-                        android:src="@drawable/ic_equalizer_light_32dp"
+                        android:src="@drawable/ic_equalizer_light"
                         android:visibility="gone" />
 
                     <TextView
@@ -106,6 +85,7 @@
                         android:text="Thời gian"
                         android:textColor="@color/colorTitleWhiteSecondary"
                         android:textSize="@dimen/text_size_small" />
+
                 </LinearLayout>
 
             </TableRow>
@@ -113,6 +93,5 @@
         </TableLayout>
 
     </android.support.v7.widget.CardView>
-
 
 </LinearLayout>

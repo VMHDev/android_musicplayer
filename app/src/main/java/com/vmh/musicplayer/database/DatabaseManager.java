@@ -22,7 +22,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 10;
 
     // Database Name
-    public static final String DATABASE_NAME = "music_of_life_db.db";
+    public static final String DATABASE_NAME = "mp20_db.db";
 
     public static  DatabaseManager newInstance(Context context) {
         if (mDatabaseInstance == null) {
@@ -41,16 +41,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SongModel.SCRIPT_CREATE_TABLE);
         db.execSQL(PlayModel.SCRIPT_CREATE_TABLE);
-        db.execSQL(PlaylistModel.SCRIPT_CREATE_TABLE);
-        db.execSQL(PlaylistSongModel.SCRIPT_CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + SongModel.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PlayModel.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + PlaylistModel.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + PlaylistSongModel.TABLE_NAME);
         onCreate(db);
     }
 }
