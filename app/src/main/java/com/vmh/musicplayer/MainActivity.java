@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
@@ -24,9 +25,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.vmh.musicplayer.callbacks.MainCallbacks;
 import com.vmh.musicplayer.database.DatabaseManager;
@@ -53,9 +56,14 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
     private TextView mTextViewTitleSongMinimize;
     private TextView mTextViewArtistMinimize;
     private ImageView mImageViewSongMinimize;
+
+    private ImageButton mButtonPlayMinimize;
+    private ImageButton mButtonNextMinimize;
+    private ImageButton mButtonPrevMinimize;
     //endregion
 
     private Intent mIntentPlayActivity;
+    private PlayService mPlayService;
 
     public static DatabaseManager mDatabaseManager;
 
@@ -94,10 +102,16 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         setContentView(R.layout.activity_main);
         initFindView();
 
+        // region Event Playing Minimize
         mLayoutPlayingMinimizie.setOnClickListener(this);
         mCardViewPlayingMinimize.setOnClickListener(this);
+        mButtonPlayMinimize.setOnClickListener(this);
+        mButtonNextMinimize.setOnClickListener(this);
+        mButtonPrevMinimize.setOnClickListener(this);
+        // endregion
 
         mMainActivity = MainActivity.this;
+        mPlayService = PlayService.newInstance();
 
         mViewPager = (ViewPager) findViewById(R.id.pagerMainContent);
         mPagerAdapter = new PagerMainAdapter(getSupportFragmentManager());
@@ -172,12 +186,40 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
     /**
      * Sự kiện khi nhấn vào minimize play
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bottomSheetPlay:
             case R.id.cardViewPlayingMinimize:
                 handleShowPlayActivityWithSongList();
+                break;
+            case R.id.btnPlaySong:
+                SongModel songPlay = null;
+                songPlay = PlayService.getCurrentSongPlaying();
+                if (songPlay == null) {
+                    songPlay = PlayService.getSongIsPlaying();
+                }
+                if (songPlay == null) {
+                    Toast.makeText(MainActivity.this, "Không tìm thấy bài hát.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (PlayService.isPlaying()) {
+                    mPlayService.pause();
+                    mButtonPlayMinimize.setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_play_circle_outline_black_small));
+                } else if (PlayService.isPause()) {
+                    mPlayService.resurme();
+                    mButtonPlayMinimize.setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_pause_circle_outline_black_small));
+                } else {
+                    mPlayService.play(songPlay);
+                    mButtonPlayMinimize.setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_pause_circle_outline_black_small));
+                }
+                break;
+            case R.id.btnNextSong:
+                mPlayService.next(PlayService.ACTION_FROM_USER);
+                break;
+            case R.id.btnPrevSong:
+                mPlayService.prev(PlayService.ACTION_FROM_USER);
                 break;
             default:
                 break;
@@ -201,11 +243,16 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         mToolBar = findViewById(R.id.tool_bar_main);
         mViewPager = findViewById(R.id.pagerMainContent);
 
+        //region Widget Playing Minimizie
         mLayoutPlayingMinimizie = findViewById(R.id.bottomSheetPlay);
         mCardViewPlayingMinimize = findViewById(R.id.cardViewPlayingMinimize);
         mTextViewTitleSongMinimize = findViewById(R.id.txtTitleMinimize);
         mTextViewArtistMinimize = findViewById(R.id.txtArtistMinimize);
         mImageViewSongMinimize = findViewById(R.id.imgSongMinimize);
+        mButtonPlayMinimize = findViewById(R.id.btnPlaySong);
+        mButtonNextMinimize = findViewById(R.id.btnNextSong);
+        mButtonPrevMinimize = findViewById(R.id.btnPrevSong);
+        //endregion
 
         mLayoutMainContent = findViewById(R.id.mainContent);
         mTabLayout = findViewById(R.id.tablayout_main);
@@ -290,6 +337,7 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         Log.d(TAG, "initMinimizePlaying: ");
         new Handler(Looper.getMainLooper()).post(
                 new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                     @Override
                     public void run() {
                         SongModel songPlay = null;
@@ -316,6 +364,7 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
     /**
      * Hiện mimimize playing
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void showMinimizePlaying(SongModel songPlaying) {
         Log.d(TAG, "togglePlayingMinimize:  SONG PLAYING " + songPlaying.getTitle());
 
@@ -323,6 +372,15 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         mTextViewArtistMinimize.setText(songPlaying.getArtist());
         Bitmap bitmap = ImageHelper.getBitmapFromPath(songPlaying.getPath(), R.mipmap.ic_music_file);
         mImageViewSongMinimize.setImageBitmap(bitmap);
+
+        //region Cập icon widget playing minimize
+        if (PlayService.isPlaying()) {
+            mButtonPlayMinimize.setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_pause_circle_outline_black_small));
+        } else {
+            mButtonPlayMinimize.setImageDrawable(MainActivity.this.getDrawable(R.drawable.ic_play_circle_outline_black_small));
+        }
+        //endregion
+
         mLayoutPlayingMinimizie.post(new Runnable() {
             @Override
             public void run() {
