@@ -44,13 +44,15 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements MainCallbacks, View.OnClickListener {
+    // region Widget main
     private CoordinatorLayout mLayoutMainContent;
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
     private TabLayout mTabLayout;
     private Toolbar mToolBar;
+    //endregion
 
-    // region Widget miniplaying
+    // region Widget mini playing
     private LinearLayout mLayoutPlayingMinimizie;
     private CardView mCardViewPlayingMinimize;
     private TextView mTextViewTitleSongMinimize;
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
     //endregion
 
     //region Methods Override
+    // region Override GUI
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,17 +130,22 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         initTabLayoutIcon();
     }
 
-    /**
-     * Xử lý GUI Title - Search
-     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initMinimizePlaying();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Xử lý GUI Title - Search
         getMenuInflater().inflate(R.menu.top_toolbar, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search_main).getActionView();
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint("Tìm kiếm ...");
         return true;
     }
+    //endregion
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -145,16 +153,13 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        initMinimizePlaying();
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
-    /**
-     * Xử lý khi nhấn nút back
-     */
     @Override
     public void onBackPressed() {
+        // Xử lý khi nhấn nút back
         if (mViewPager.getCurrentItem() == 0) {
             super.onBackPressed();
         } else {
@@ -162,33 +167,10 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         }
     }
 
-    /**
-     * Hiện Activity Play để run bài hát
-     */
-    @Override
-    public void playSongsFromFragmentListToMain() {
-        handleShowPlayActivityWithSongList();
-    }
-
-    /**
-     * Ẩn/ hiện mimimize playing
-     */
-    @Override
-    public void togglePlayingMinimize(String sender) {
-        initMinimizePlaying();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    /**
-     * Sự kiện khi nhấn vào minimize play
-     */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
+        //Sự kiện khi nhấn vào minimize play
         switch (v.getId()) {
             case R.id.bottomSheetPlay:
             case R.id.cardViewPlayingMinimize:
@@ -225,17 +207,28 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
                 break;
         }
     }
+
+    //region Override Callbacks
+    /**
+     * Hiện Activity Play để run bài hát
+     */
+    @Override
+    public void playSongsFromFragmentListToMain() {
+        handleShowPlayActivityWithSongList();
+    }
+
+    /**
+     * Ẩn/ hiện mimimize playing
+     */
+    @Override
+    public void togglePlayingMinimize(String sender) {
+        initMinimizePlaying();
+    }
+    //endregion
     //endregion
 
     //region Functions
-    /**
-     * Khởi tạo data đọc từ bộ nhớ
-     */
-    private void initDataBaseFromDevice() {
-        mDatabaseManager = DatabaseManager.newInstance(getApplicationContext());
-        new intitSongFromDevice().execute();
-    }
-
+    //region GUI
     /**
      * Khởi tạo Widget View
      */
@@ -287,6 +280,16 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
             }
         });
     }
+    //endregion
+
+    //region Load Song
+    /**
+     * Khởi tạo data đọc từ bộ nhớ
+     */
+    private void initDataBaseFromDevice() {
+        mDatabaseManager = DatabaseManager.newInstance(getApplicationContext());
+        new intitSongFromDevice().execute();
+    }
 
     /**
      *  Khởi tạo danh sách bài hát từ thiết bị
@@ -318,6 +321,7 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
             return tempAudioList;
         }
     }
+    //endregion
 
     /**
      * Run bài hát
@@ -330,8 +334,9 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         startActivity(mIntentPlayActivity);
     }
 
+    // region Mini playing
     /**
-     * Ẩn/ hiện mimimize playing
+     * Ẩn/ hiện Mini playing
      */
     private void initMinimizePlaying() {
         Log.d(TAG, "initMinimizePlaying: ");
@@ -362,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
     }
 
     /**
-     * Hiện mimimize playing
+     * Hiện Mini playing
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void showMinimizePlaying(SongModel songPlaying) {
@@ -393,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
     }
 
     /**
-     * Ẩn mimimize playing
+     * Ẩn Mini playing
      */
     private void hideMinimizePlaying() {
         mLayoutPlayingMinimizie.post(new Runnable() {
@@ -405,5 +410,7 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
             }
         });
     }
+    //endregion
+
     //endregion
 }

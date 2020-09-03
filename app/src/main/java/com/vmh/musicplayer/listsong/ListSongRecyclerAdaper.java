@@ -113,7 +113,7 @@ public class ListSongRecyclerAdaper extends RecyclerView.Adapter<RecyclerView.Vi
         void bindContent(SongModel songModel) {
             Log.d(TAG, "bindContent: BIND CONTENT");
             this.titleSong.setText(songModel.getTitle());
-            this.artist.setText(songModel.getArtist() + "_" + songModel.getAlbumId());
+            this.artist.setText(songModel.getArtist());
 
             final Bitmap bitmap = mImageCacheHelper.getBitmapCache(songModel.getAlbumId());
             if (bitmap != null) {
