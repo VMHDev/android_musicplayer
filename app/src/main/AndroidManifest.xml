@@ -30,6 +30,14 @@
 
         <activity android:name=".MainActivity"/>
 
+        <receiver android:name=".NotifyBroadcastReceiver">
+            <intent-filter>
+                <action android:name="Play_Button_Notification" />
+                <action android:name="Next_Button_Notification" />
+                <action android:name="Prev_Button_Notification" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

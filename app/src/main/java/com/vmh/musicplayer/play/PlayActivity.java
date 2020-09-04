@@ -139,7 +139,7 @@ public class PlayActivity extends AppCompatActivity implements PlayInterface {
         }
     }
 
-    private void refreshListPlaying() {
+    public void refreshListPlaying() {
         FragmentListPlaying fragmentListPlaying = ((FragmentPlayAdapter) mPagerAdapter).getFragmentListPlaying();
         if (fragmentListPlaying != null) {
             fragmentListPlaying.refreshListPlaying();
