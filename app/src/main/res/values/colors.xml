@@ -5,6 +5,9 @@
     <color name="colorPrimaryLight">#0A0D0A</color>
     <color name="colorAccent">#1ED760</color>
 
+    <color name="colorBgPrimary">#1E1F26</color>
+    <color name="colorBgPrimaryOverlay">#1E1F26</color>
+
     <color name="colorTitlePrimary">#212121</color>
     <color name="colorTitleSecondary">#616161</color>
     <color name="colorTitleWhitePrimary">#FAFAFA</color>
