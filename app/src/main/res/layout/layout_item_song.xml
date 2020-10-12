@@ -11,6 +11,7 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/layoutItemSong"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -89,7 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
-                        android:text="Ca sĩ"
+                        android:text="Nghệ sĩ"
                         android:textColor="@color/colorTitleWhiteSecondary"
                         android:textSize="@dimen/text_size_small" />
                 </LinearLayout>
@@ -112,7 +113,7 @@
                     <ImageButton
                         android:id="@+id/btnOptionSong"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
                         android:background="@color/colorTranparent"
                         android:clickable="true"

@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.vmh.musicplayer.MainActivity;
 import com.vmh.musicplayer.R;
@@ -25,11 +24,12 @@ import com.vmh.musicplayer.callbacks.FragmentCallbacks;
 import com.vmh.musicplayer.database.DatabaseManager;
 import com.vmh.musicplayer.model.SongModel;
 import com.vmh.musicplayer.play.PlayService;
+import com.vmh.musicplayer.playlist.BottomSheetOptionSong;
 import com.vmh.musicplayer.playlist.FragmentPlaylist;
 
 import java.util.ArrayList;
 
-public class FragmentListSong extends Fragment implements FragmentCallbacks, RecyclerItemClickListener.OnItemClickListener {
+public class FragmentListSong extends Fragment implements FragmentCallbacks, RecyclerItemClickListener.OnItemClickListener, MultiClickAdapterListener {
     MainActivity _mainActivity;
     Context _context;
     ArrayList<SongModel> _listSong;
@@ -41,6 +41,8 @@ public class FragmentListSong extends Fragment implements FragmentCallbacks, Rec
     private static final int mThreshHold = 10;
     private static boolean mIsLoading;
     private static PlayService mPlayService;
+    private static Thread mThreadInitListPlaying;
+    static String searchValue = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,6 @@ public class FragmentListSong extends Fragment implements FragmentCallbacks, Rec
         } catch (IllegalStateException e) {
 
         }
-
     }
 
     public static FragmentListSong newInstance() {
@@ -87,7 +88,7 @@ public class FragmentListSong extends Fragment implements FragmentCallbacks, Rec
             @Override
             public void run() {
                 _listSong = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager, 0, mThreshHold);
-                _listSongAdapter = new ListSongRecyclerAdaper(_context, _listSong);
+                _listSongAdapter = new ListSongRecyclerAdaper(_context, _listSong, FragmentListSong.this);
                 _listViewSong.setLayoutManager(new LinearLayoutManager(_context));
                 _listViewSong.setAdapter(_listSongAdapter);
                 _txtSizeOfListSong.setText("Tìm thấy " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " bài hát");
@@ -115,8 +116,8 @@ public class FragmentListSong extends Fragment implements FragmentCallbacks, Rec
                 }
             }
         });
-        return view;
 
+        return view;
     }
 
     @Override
@@ -125,17 +126,23 @@ public class FragmentListSong extends Fragment implements FragmentCallbacks, Rec
     }
 
     private void loadMore() {
-        _listSong.add(null);
-        _listSongAdapter.notifyItemInserted(_listSong.size() - 1);
-
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                _listSong.remove(_listSong.size() - 1);
+                if (_listSong.size() > 0) {
+                    _listSong.remove(_listSong.size() - 1);
+                }
                 int scollPosition = _listSong.size();
                 _listSongAdapter.notifyItemRemoved(scollPosition);
-                ArrayList<SongModel> tempAudioList = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager, _listSong.size(), mThreshHold);
+                ArrayList<SongModel> tempAudioList = new ArrayList<>();
+                if (searchValue != "") {
+                    tempAudioList = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager, searchValue, _listSong.size(), mThreshHold);
+                } else {
+                    tempAudioList = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager, _listSong.size(), mThreshHold);
+                }
                 _listSong.addAll(tempAudioList);
+                _listSongAdapter.notifyDataSetChanged();
+                Log.i(TAG, "loadMore: FINISHED " + tempAudioList.size());
                 mIsLoading = false;
             }
         });
@@ -153,7 +160,48 @@ public class FragmentListSong extends Fragment implements FragmentCallbacks, Rec
             }
         }).start();
 
-        _mainActivity.playSongsFromFragmentListToMain();
+        _mainActivity.playSongsFromFragmentListToMain(FragmentPlaylist.SENDER);
+    }
+
+    @Override
+    public void optionMenuClick(View v, int position) {
+        final SongModel songChose = _listSong.get(position);
+        showBottomSheetOptionSong(songChose);
+    }
+
+    @Override
+    public void layoutItemClick(View v, int position) {
+        final SongModel songChose = _listSong.get(position);
+        playSong(songChose);
+    }
+
+    @Override
+    public void layoutItemLongClick(View v, int position) {
+        final SongModel songChose = _listSong.get(position);
+        showBottomSheetOptionSong(songChose);
+    }
+
+    private void playSong(SongModel songPlay) {
+        mPlayService.play(songPlay);
+
+        if (mThreadInitListPlaying != null && mThreadInitListPlaying.isAlive()) {
+            mThreadInitListPlaying.interrupt();
+        }
+
+        mThreadInitListPlaying = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mPlayService.initListPlaying(SongModel.getAllSongs(DatabaseManager.getInstance()));
+            }
+        });
+        mThreadInitListPlaying.start();
+        _mainActivity.playSongsFromFragmentListToMain(FragmentPlaylist.SENDER);
+    }
+
+    private void showBottomSheetOptionSong(SongModel song) {
+
+        BottomSheetOptionSong bottomSheetDialogFragment = new BottomSheetOptionSong(song);
+        bottomSheetDialogFragment.show(_mainActivity.getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
     }
 
     private class loadImageFromStorage extends AsyncTask<Void, Integer, ArrayList<SongModel>> {
@@ -189,6 +237,21 @@ public class FragmentListSong extends Fragment implements FragmentCallbacks, Rec
             _listSongAdapter.notifyItemInserted(_listSong.size());
             ArrayList<SongModel> tempAudioList = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager, _listSong.size(), mThreshHold);
             return tempAudioList;
+        }
+    }
+
+    public void UpdateSearch(String s) {
+        if (s == searchValue) return;
+        searchValue = s;
+        mIsLoading = true;
+        ArrayList<SongModel> tempAudioList = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager, searchValue, 0, mThreshHold);
+        _listSong.clear();
+        _listSongAdapter.notifyDataSetChanged();
+        _listSong.addAll(tempAudioList);
+        mIsLoading = false;
+        if (tempAudioList.size() > 0) {
+            loadMore();
+
         }
     }
 }

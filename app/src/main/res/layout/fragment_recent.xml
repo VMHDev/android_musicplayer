@@ -1,13 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:layout_marginBottom="@dimen/margin_size_xsmall"
+    android:background="@color/colorTranparent"
+    android:orientation="vertical"
 
-    <TextView
+    >
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="FRAGMENT RECENT"
-        android:textColor="@color/colorWhite"/>
-</android.support.constraint.ConstraintLayout>
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_size_snormal"
+                android:layout_marginBottom="@dimen/margin_size_small"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/layoutTxtTitleArtistRecent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin_size_small"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/margin_size_snormal"
+                        android:gravity="center_vertical"
+                        android:text="Nghệ sĩ"
+                        android:textColor="@color/colorTitleWhitePrimary"
+                        android:textSize="@dimen/text_size_large" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+                </LinearLayout>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rcvArtistRecent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_size_snormal"
+                    android:orientation="vertical" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_size_snormal"
+                android:layout_marginBottom="@dimen/margin_size_small"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/layoutTxtTitleSongRecent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin_size_small"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/margin_size_snormal"
+                        android:gravity="center_vertical"
+
+                        android:text="Bài hát"
+                        android:textColor="@color/colorTitleWhitePrimary"
+                        android:textSize="@dimen/text_size_large" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+                </LinearLayout>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rcvSongRecent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/margin_size_snormal"
+                android:layout_marginBottom="@dimen/margin_size_small"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin_size_xsmall">
+
+                <LinearLayout
+                    android:id="@+id/layoutTxtTitlePlaylistRecent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin_size_small"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/margin_size_snormal"
+                        android:gravity="center_vertical"
+                        android:text="Playlist"
+                        android:textColor="@color/colorTitleWhitePrimary"
+                        android:textSize="@dimen/text_size_large" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+                </LinearLayout>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rcvPlaylistRecent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+</android.support.design.widget.CoordinatorLayout>

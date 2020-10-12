@@ -11,6 +11,7 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/layoutItemSongPlaying"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -58,7 +59,7 @@
                         android:id="@+id/txtArtist"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ca sĩ"
+                        android:text="Nghệ sĩ"
                         android:textColor="@color/colorTitleWhiteSecondary"
                         android:textSize="@dimen/text_size_small" />
 

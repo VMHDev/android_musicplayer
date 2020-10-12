@@ -10,12 +10,6 @@
     android:clickable="true"
     android:fitsSystemWindows="true">
 
-    <ImageView
-        android:id="@+id/imgSongMinimize"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_gravity="center_vertical"
@@ -57,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_size_snormal"
-                android:text="Ca sĩ"
+                android:text="Nghệ sĩ"
                 android:textColor="@color/colorTitleSecondary"
                 android:textSize="@dimen/text_size_normal" />
 

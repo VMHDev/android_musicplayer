@@ -14,7 +14,6 @@ import android.media.MediaMetadataRetriever;
 import android.util.Log;
 
 import com.vmh.musicplayer.MainActivity;
-import com.vmh.musicplayer.R;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -22,7 +21,6 @@ import java.io.InputStream;
 public class ImageHelper {
     private static Context mContext = MainActivity.getMainActivity().getApplicationContext();
     private static final String TAG = "ImageHelper";
-
 
     public static Bitmap getBitmapFromPath(String pathImage, int resourceDefaultId) {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
@@ -35,9 +33,6 @@ public class ImageHelper {
                 if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
                     inputStream = new ByteArrayInputStream(mediaMetadataRetriever.getEmbeddedPicture());
                     mediaMetadataRetriever.release();
-//                BitmapFactory.Options options = new BitmapFactory.Options();
-//                options.inPreferredConfig = Bitmap.Config.RGB_565;
-
                     bitmap = BitmapFactory.decodeStream(inputStream);
                 } else {
                     bitmap = BitmapFactory.decodeResource(mContext.getResources(), resourceDefaultId);
@@ -50,11 +45,11 @@ public class ImageHelper {
         } else {
             bitmap = BitmapFactory.decodeResource(mContext.getResources(), resourceDefaultId);
         }
-//        Bitmap thumbnail= ThumbnailUtils.extractThumbnail(bitmap,128,128,ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
-        mediaMetadataRetriever.release();
 
+        mediaMetadataRetriever.release();
         return bitmap;
     }
+
     public static Bitmap getBitmapFromPath(String pathImage) {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         Bitmap bitmap = null;
@@ -66,56 +61,22 @@ public class ImageHelper {
                 if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
                     inputStream = new ByteArrayInputStream(mediaMetadataRetriever.getEmbeddedPicture());
                     mediaMetadataRetriever.release();
-//                BitmapFactory.Options options = new BitmapFactory.Options();
-//                options.inPreferredConfig = Bitmap.Config.RGB_565;
-
                     bitmap = BitmapFactory.decodeStream(inputStream);
                 } else {
                     bitmap = null;
                     Log.d(TAG, "getBitmapFromPath: " + bitmap.getByteCount());
                 }
             } catch (Exception ex) {
-                bitmap = null;//BitmapFactory.decodeResource(mContext.getResources(), resourceDefaultId);
+                bitmap = null;
             }
 
         } else {
             bitmap = null;
         }
-//        Bitmap thumbnail= ThumbnailUtils.extractThumbnail(bitmap,128,128,ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
         mediaMetadataRetriever.release();
 
         return bitmap;
     }
-    public static BitmapDrawable getMainBackgroundDrawable() {
-        Bitmap bitmap = ImageHelper.createImage(480,960, Color.argb(100,71,72,81));//ImageHelper.drawableToBitmap(R.drawable.highcompress_background_test);//highcompress_background_test
-
-//        Bitmap bitmapBg = ImageHelper.blurBitmap(bitmap, 1.0f, 10);
-
-
-        BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
-        return bitmapDrawable;
-    }
-
-    public static BitmapDrawable getMainBackgroundDrawableFromBitmap(Bitmap bitmap) {
-//        Bitmap bitmap = ImageHelper.drawableToBitmap(R.drawable.highcompress_background_test);
-
-        Bitmap bitmapBg = ImageHelper.blurBitmap(bitmap, 1.0f, 20);
-
-
-        BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmapBg);
-        return bitmapDrawable;
-    }
-
-   // public static BitmapDrawable getMimimizeBackgroundDrawable() {
-
-//        Bitmap bitmap = ImageHelper.drawableToBitmap(R.drawable.highcompress_background_test);
-//        Bitmap bitmapWhiteGlass = ImageHelper.createImage(bitmap.getWidth(), bitmap.getHeight(), Color.argb(50, 255, 255, 255));
-//        Bitmap bitmapBg = ImageHelper.blurBitmap(bitmap, 1.0f, 20);
-//
-//        Bitmap bitmapOverlay = ImageHelper.overlayBitmapToCenter(bitmapBg, bitmapWhiteGlass);
-//        BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmapWhiteGlass);
-//        return bitmapDrawable;
-    //}
 
     public static Bitmap drawableToBitmap(int drawableId) {
 
@@ -133,34 +94,31 @@ public class ImageHelper {
         return bitmap;
     }
 
-    /**
-     * Stack Blur v1.0 from
-     * http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html
-     * Java Author: Mario Klingemann <mario at quasimondo.com>
-     * http://incubator.quasimondo.com
-     * <p>
-     * created Feburary 29, 2004
-     * Android port : Yahel Bouaziz <yahel at kayenko.com>
-     * http://www.kayenko.com
-     * ported april 5th, 2012
-     * <p>
-     * This is a compromise between Gaussian Blur and Box blur
-     * It creates much better looking blurs than Box Blur, but is
-     * 7x faster than my Gaussian Blur implementation.
-     * <p>
-     * I called it Stack Blur because this describes best how this
-     * filter works internally: it creates a kind of moving stack
-     * of colors whilst scanning through the image. Thereby it
-     * just has to add one new block of color to the right side
-     * of the stack and remove the leftmost color. The remaining
-     * colors on the topmost layer of the stack are either added on
-     * or reduced by one, depending on if they are on the right or
-     * on the left side of the stack.
-     * <p>
-     * If you are using this algorithm in your code please add
-     * the following line:
-     * Stack Blur Algorithm by Mario Klingemann <mario@quasimondo.com>
-     */
+    public static boolean isDarkBitmap(Bitmap bitmap) {
+        boolean dark = false;
+
+        float darkThreshold = bitmap.getWidth() * bitmap.getHeight() * 0.45f;
+        int darkPixels = 0;
+
+        int[] pixels = new int[bitmap.getWidth() * bitmap.getHeight()];
+        bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        for (int pixel : pixels) {
+            int color = pixel;
+            int r = Color.red(color);
+            int g = Color.green(color);
+            int b = Color.blue(color);
+            double luminance = (0.299 * r + 0.0f + 0.587 * g + 0.0f + 0.114 * b + 0.0f);
+            if (luminance < 150) {
+                darkPixels++;
+            }
+        }
+
+        if (darkPixels >= darkThreshold) {
+            dark = true;
+        }
+        return dark;
+    }
 
     public static Bitmap blurBitmap(Bitmap sentBitmap, float scale, int radius) {
 
@@ -371,32 +329,13 @@ public class ImageHelper {
 
         return (bitmap);
     }
-
-    public static boolean isDarkBitmap(Bitmap bitmap) {
-        boolean dark = false;
-
-        float darkThreshold = bitmap.getWidth() * bitmap.getHeight() * 0.45f;
-        int darkPixels = 0;
-
-        int[] pixels = new int[bitmap.getWidth() * bitmap.getHeight()];
-        bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-        for (int pixel : pixels) {
-            int color = pixel;
-            int r = Color.red(color);
-            int g = Color.green(color);
-            int b = Color.blue(color);
-            double luminance = (0.299 * r + 0.0f + 0.587 * g + 0.0f + 0.114 * b + 0.0f);
-            if (luminance < 150) {
-                darkPixels++;
-            }
-        }
-
-        if (darkPixels >= darkThreshold) {
-            dark = true;
-        }
-//        long duration = System.currentTimeMillis() - s;
-        return dark;
+    public static Bitmap createImage(int width, int height, int color) {
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setColor(color);
+        canvas.drawRect(0F, 0F, (float) width, (float) height, paint);
+        return bitmap;
     }
 
     public static Bitmap overlayBitmapToCenter(Bitmap bitmap1, Bitmap bitmap2) {
@@ -415,12 +354,13 @@ public class ImageHelper {
         return overlayBitmap;
     }
 
-    public static Bitmap createImage(int width, int height, int color) {
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        Paint paint = new Paint();
-        paint.setColor(color);
-        canvas.drawRect(0F, 0F, (float) width, (float) height, paint);
-        return bitmap;
+    public static BitmapDrawable getMainBackgroundDrawableFromBitmap(Bitmap bitmap) {
+//        Bitmap bitmap = ImageHelper.drawableToBitmap(R.drawable.highcompress_background_test);
+
+        Bitmap bitmapBg = ImageHelper.blurBitmap(bitmap, 1.0f, 20);
+
+
+        BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmapBg);
+        return bitmapDrawable;
     }
 }

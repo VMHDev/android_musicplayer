@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import com.vmh.musicplayer.MainActivity;
 import com.vmh.musicplayer.R;
 import com.vmh.musicplayer.database.DatabaseManager;
-import com.vmh.musicplayer.model.SongModel;
+import com.vmh.musicplayer.model.*;
 import com.vmh.musicplayer.utilities.Utility;
 
 import java.util.ArrayList;

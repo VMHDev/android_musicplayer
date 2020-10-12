@@ -34,11 +34,13 @@ public class ListSongRecyclerAdaper extends RecyclerView.Adapter<RecyclerView.Vi
     private LruCache<Long, Bitmap> mBitmapCache;
     private BitmapDrawable mPlaceholder;
     private ImageCacheHelper mImageCacheHelper;
+    public MultiClickAdapterListener mListener;
 
-    public ListSongRecyclerAdaper(Context context, ArrayList<SongModel> listSong) {
+    public ListSongRecyclerAdaper(Context context, ArrayList<SongModel> listSong, MultiClickAdapterListener listener) {
         mContext = context;
         mListSong = listSong;
         mImageCacheHelper = new ImageCacheHelper(R.mipmap.ic_music_file);
+        mListener = listener;
     }
 
     @NonNull
@@ -46,7 +48,7 @@ public class ListSongRecyclerAdaper extends RecyclerView.Adapter<RecyclerView.Vi
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         if (i == VIEW_TYPE_ITEM) {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_item_song, viewGroup, false);
-            return new ViewHolderRecycler(view);
+            return new HolderSongRecyclerView(view, mListener);
         } else {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.progressbar_circle, viewGroup, false);
             return new LoadingViewHolder(view);
@@ -55,14 +57,14 @@ public class ListSongRecyclerAdaper extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        if (viewHolder instanceof ViewHolderRecycler) {
-            showSongItem((ViewHolderRecycler) viewHolder, i);
+        if (viewHolder instanceof HolderSongRecyclerView) {
+            showSongItem((HolderSongRecyclerView) viewHolder, i);
         } else if (viewHolder instanceof LoadingViewHolder) {
             showLoading((LoadingViewHolder) viewHolder, i);
         }
     }
 
-    private void showSongItem(ViewHolderRecycler viewHolder, int position) {
+    private void showSongItem(HolderSongRecyclerView viewHolder, int position) {
         SongModel songModel = mListSong.get(position);
         viewHolder.bindContent(songModel);
     }

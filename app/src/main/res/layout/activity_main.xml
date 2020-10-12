@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorTranparent"
             android:theme="@style/AppTheme.Toolbar"
-            app:title="MP20" />
+            app:title="MusicPlayer" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tablayout_main"

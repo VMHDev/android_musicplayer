@@ -273,7 +273,7 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
     private static void setIndexSongInPlayingList() {
         if (mSongPlayingList != null) {
             for (int i = 0; i < mSongPlayingList.size(); i++) {
-                if (mSongPlayingList.get(i).getSongId() == mCurrentSongPlaying.getSongId()) {
+                if (mCurrentSongPlaying != null && mSongPlayingList.get(i).getSongId() == mCurrentSongPlaying.getSongId()) {
                     mCurrentIndexSong = i;
                 }
             }
@@ -286,7 +286,7 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
         if (!mMediaPlayer.isPlaying()) {
             mCountDownTimerUpdateSeekBar = new CountDownTimer(mCurrentSongPlaying.getDuration(), 1000) {
                 public void onTick(long millisUntilFinished) {
-                    if (mMediaPlayer.isPlaying()) {
+                    if (mMediaPlayer.isPlaying() && mCurrentSongPlaying != null) {
                         Log.d(TAG, "onTick: " + millisUntilFinished + " " + mCurrentSongPlaying.getTitle());
                         updateSeekbar(SENDER, mMediaPlayer.getCurrentPosition());
                     }
@@ -298,6 +298,14 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
             }.start();
         }
         mp.start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long retSong = RecentModel.addToRecent(String.valueOf(mCurrentSongPlaying.getSongId()), RecentModel.TYPE_SONG);
+                long retArtist = RecentModel.addToRecent(String.valueOf(mCurrentSongPlaying.getArtist()), RecentModel.TYPE_ARTIST);
+                Log.d(TAG, "run: INSERT RECENT SONG " + retSong + "_ARTIST " + retArtist);
+            }
+        }).start();
         if (PlayActivity.getActivity() != null) {
             PlayActivity.getActivity().updateButtonPlay(SENDER);
         }
@@ -320,8 +328,11 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
         new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean resultUpdateStatus = PlayModel.updateStatusPlaying(mOldSongPlaying.getSongId(), mCurrentSongPlaying.getSongId());
-                Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
+                if (mOldSongPlaying != null && mCurrentSongPlaying != null) {
+                    boolean resultUpdateStatus = PlayModel.updateStatusPlaying(mOldSongPlaying.getSongId(), mCurrentSongPlaying.getSongId());
+                    Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
+                }
+
             }
         }).start();
     }
@@ -332,5 +343,24 @@ public class PlayService implements PlayInterface, MediaPlayer.OnPreparedListene
 
     public static SongModel getSongIsPlaying() {
         return PlayModel.getSongIsPlaying();
+    }
+
+    public static long addSongToPlayingList(SongModel song) {
+
+        if (song == null) {
+            return -1;
+        }
+        boolean isExist = PlayModel.isSongExsist(song);
+        if (isExist) {
+            return 0;
+        }
+        long result = PlayModel.addSongToPlayingList(song);
+        if (result > 0) {
+            updatePlayingList();
+        } else {
+            return -1;
+        }
+
+        return result;
     }
 }

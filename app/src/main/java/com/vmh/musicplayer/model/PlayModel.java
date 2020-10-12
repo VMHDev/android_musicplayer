@@ -15,13 +15,12 @@ import java.util.Date;
 import java.util.Locale;
 
 public class PlayModel {
-    public static final String TABLE_NAME = "plays";
+    public static final String TABLE_NAME = "play";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_SONG_ID = "song_id";
     public static final String COLUMN_IS_PLAYING = "is_playing";
     public static final String COLUMN_CURRENT_DURATION = "current_duration";
     public static final String COLUMN_CREATE_DATE = "create_date";
-
 
     public static final String SCRIPT_CREATE_TABLE = new StringBuilder("CREATE TABLE ")
             .append(TABLE_NAME).append("(")
@@ -32,7 +31,6 @@ public class PlayModel {
             .append(COLUMN_CREATE_DATE).append(" DATETIME ")
             .append(" )")
             .toString();
-
 
     private Context mContext;
     private static DatabaseManager mDatabaseManager = DatabaseManager.getInstance();

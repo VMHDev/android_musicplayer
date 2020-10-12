@@ -84,7 +84,7 @@
                         android:id="@+id/txtArtistMinimize"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ca sĩ"
+                        android:text="Nghệ sĩ"
                         android:textColor="@color/colorTitleSecondary"
                         android:textSize="@dimen/text_size_normal" />
 

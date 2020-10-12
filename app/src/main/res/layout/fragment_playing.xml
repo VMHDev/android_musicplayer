@@ -131,7 +131,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Tên ca sĩ tại đây"
+                    android:text="Tên nghệ sĩ tại đây"
                     android:textColor="@color/colorTitleWhiteSecondary"
                     android:textSize="@dimen/text_size_large" />
 

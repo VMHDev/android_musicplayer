@@ -36,6 +36,49 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
+    <style name="PopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/colorBgPrimary</item>
+        <item name="android:colorBackground">@color/colorBgPrimary</item>
+        <item name="android:textColor">@color/colorTitleWhitePrimary</item>
+    </style>
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="DialogFullScreen" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+    </style>
+
+    <style name="FullScreenDialogStyle" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/colorWhite</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+
+        <!-- Set this to true if you want Full Screen without status bar -->
+        <item name="android:windowFullscreen">false</item>
+
+        <item name="android:windowIsFloating">false</item>
+
+        <!-- This is important! Don't forget to set window background -->
+        <item name="android:windowBackground">@color/colorWhite</item>
+
+        <!-- Additionally if you want animations when dialog opening -->
+<!--        <item name="android:windowEnterAnimation">@anim/slide_up</item>-->
+<!--        <item name="android:windowExitAnimation">@anim/slide_down</item>-->
+    </style>
+
+
+    <style name="ActionCircleButton" parent="Widget.AppCompat.ActionButton">
+        <item name="background">?attr/actionBarItemBackground</item>
+        <item name="paddingStart">8dp</item>
+        <item name="paddingEnd">8dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:maxLines">2</item>
+    </style>    q
     <!-- Splash Screen theme. -->
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_background</item>

@@ -33,8 +33,8 @@ public class SplashActivity extends AppCompatActivity {
     private DatabaseManager mDatabaseManager;
 
     private String[] appPermission = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.INTERNET
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
     };
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -107,8 +107,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     /**
-    * Load thông tin bài hát + Run Activity Main
-    */
+     * Load thông tin bài hát + Run Activity Main
+     */
     public void initApp() {
         mDatabaseManager = DatabaseManager.newInstance(getApplicationContext());
         new Thread(new Runnable() {

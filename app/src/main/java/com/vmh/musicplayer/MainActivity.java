@@ -16,7 +16,6 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
@@ -38,14 +37,16 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vmh.musicplayer.artist.FragmentArtist;
 import com.vmh.musicplayer.callbacks.MainCallbacks;
 import com.vmh.musicplayer.database.DatabaseManager;
+import com.vmh.musicplayer.folder.FragmentFolder;
 import com.vmh.musicplayer.listsong.FragmentListSong;
 import com.vmh.musicplayer.model.SongModel;
 import com.vmh.musicplayer.play.PlayActivity;
 import com.vmh.musicplayer.play.PlayService;
+import com.vmh.musicplayer.playlist.FragmentPlaylist;
 import com.vmh.musicplayer.utilities.ImageHelper;
-import com.vmh.musicplayer.utilities.Utility;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
     private ImageButton mButtonPlayMinimize;
     private ImageButton mButtonNextMinimize;
     private ImageButton mButtonPrevMinimize;
+    private int mCurrentFragmentActive;
+    private String mSearchValue = "";
     //endregion
 
     //region Notification
@@ -144,6 +147,24 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         mTabLayout = findViewById(R.id.tablayout_main);
         mTabLayout.setupWithViewPager(mViewPager);
 
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                mCurrentFragmentActive = i;
+                SearchByFragment(i);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+
         initDataBaseFromDevice();
         initTabLayoutIcon();
         initMinimizePlaying();
@@ -162,6 +183,23 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search_main).getActionView();
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint("Tìm kiếm ...");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                mSearchValue = s;
+                SearchByFragment(mCurrentFragmentActive);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                mSearchValue = s;
+                SearchByFragment(mCurrentFragmentActive);
+                return false;
+            }
+        });
+
         return true;
     }
     //endregion
@@ -231,8 +269,10 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
     /**
      * Hiện Activity Play để run bài hát
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void playSongsFromFragmentListToMain() {
+    public void playSongsFromFragmentListToMain(String Sender) {
+        refreshNotificationPlaying(PlayService.ACTION_PLAY);
         handleShowPlayActivityWithSongList();
     }
 
@@ -257,10 +297,10 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         }
         createNotificationChanel();
 
-        //create layout notification
+        // Create layout notification
         mNotificationlayoutPlaying = new RemoteViews(getPackageName(), R.layout.layout_notificatoin_play);
 
-        //set content notification
+        // Set content notification
         Bitmap bitmapBg = ImageHelper.getBitmapFromPath(songPlaying.getPath(), R.mipmap.ic_music_file);
         Bitmap bitmapBgBlur = ImageHelper.blurBitmap(bitmapBg, 2.0f, 4);
         Bitmap bitmapOverlay = ImageHelper.createImage(bitmapBgBlur.getWidth(), bitmapBgBlur.getHeight(), getResources().getColor(R.color.colorBgPrimaryOverlay));
@@ -274,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
             mNotificationlayoutPlaying.setImageViewResource(R.id.btnPlaySong, R.drawable.ic_play_circle_outline_black_small);
         }
 
-        //playback activity
+        // Playback activity
         Intent mainIntent = new Intent(this, MainActivity.class);//mới change
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -282,11 +322,11 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         stackBuilder.addNextIntent(mainIntent);
 
 
-        //intent back to activity
+        // Intent back to activity
         PendingIntent pendingIntentPlay = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mNotificationlayoutPlaying.setOnClickPendingIntent(R.id.notificationLayout, pendingIntentPlay);
 
-        //intent play song
+        // Intent play song
         Intent playButtonIntent = new Intent(this, NotifyBroadcastReceiver.class);
         playButtonIntent.setAction(NotifyBroadcastReceiver.ACTION_PLAY_NOTIFY);
         playButtonIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -306,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         mNotificationlayoutPlaying.setOnClickPendingIntent(R.id.btnNextSong, nextButtonPending);
         mNotificationlayoutPlaying.setOnClickPendingIntent(R.id.btnPrevSong, prevButtonPending);
 
-        //\intent play song
+        // Intent play song
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, PLAY_CHANEL_ID.toString())
                 .setSmallIcon(R.drawable.ic_album_black_small)
                 .setDefaults(0)
@@ -346,6 +386,37 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
 
         mLayoutMainContent = findViewById(R.id.mainContent);
         mTabLayout = findViewById(R.id.tablayout_main);
+    }
+
+    public void SearchByFragment(int fragmentIndex) {
+        switch (fragmentIndex) {
+            case 1:
+                FragmentListSong fragmentListSong = (FragmentListSong) ((PagerMainAdapter) mPagerAdapter).getFragmentAtIndex(fragmentIndex);
+                if (fragmentListSong != null) {
+                    fragmentListSong.UpdateSearch(mSearchValue);
+                }
+                break;
+            case 2:
+                FragmentPlaylist fragmentPlaylist = (FragmentPlaylist) ((PagerMainAdapter) mPagerAdapter).getFragmentAtIndex(fragmentIndex);
+                if (fragmentPlaylist != null) {
+                    fragmentPlaylist.UpdateSearch(mSearchValue);
+                }
+                break;
+            case 3:
+                FragmentArtist fragmentArtist = (FragmentArtist) ((PagerMainAdapter) mPagerAdapter).getFragmentAtIndex(fragmentIndex);
+                if (fragmentArtist != null) {
+                    fragmentArtist.UpdateSearch(mSearchValue);
+                }
+                break;
+            case 5:
+                FragmentFolder fragmentFolder = (FragmentFolder) ((PagerMainAdapter) mPagerAdapter).getFragmentAtIndex(fragmentIndex);
+                if (fragmentFolder != null) {
+                    fragmentFolder.UpdateSearch(mSearchValue);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -518,10 +589,10 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         }
         createNotificationChanel();
 
-        //create layout notification
+        // Create layout notification
         mNotificationlayoutPlaying = new RemoteViews(getPackageName(), R.layout.layout_notificatoin_play);
 
-        //set content notification
+        // Set content notification
         Bitmap bitmapBg = ImageHelper.getBitmapFromPath(songPlaying.getPath(), R.mipmap.ic_music_file);
         Bitmap bitmapBgBlur = ImageHelper.blurBitmap(bitmapBg, 2.0f, 4);
         Bitmap bitmapOverlay = ImageHelper.createImage(bitmapBgBlur.getWidth(), bitmapBgBlur.getHeight(), getResources().getColor(R.color.colorBgPrimaryOverlay));
@@ -535,18 +606,18 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
             mNotificationlayoutPlaying.setImageViewResource(R.id.btnPlaySong, R.drawable.ic_play_circle_outline_black_small);
         }
 
-        //playback activity
+        // Playback activity
         Intent mainIntent = new Intent(this, MainActivity.class);//mới change
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(PlayActivity.class);
         stackBuilder.addNextIntent(mainIntent);
 
-        //intent back to activity
+        // Intent back to activity
         PendingIntent pendingIntentPlay = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mNotificationlayoutPlaying.setOnClickPendingIntent(R.id.notificationLayout, pendingIntentPlay);
 
-        //intent play song
+        // Intent play song
         Intent playButtonIntent = new Intent(this, NotifyBroadcastReceiver.class);
         playButtonIntent.setAction(NotifyBroadcastReceiver.ACTION_PLAY_NOTIFY);
         playButtonIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -566,7 +637,7 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks, Vi
         mNotificationlayoutPlaying.setOnClickPendingIntent(R.id.btnNextSong, nextButtonPending);
         mNotificationlayoutPlaying.setOnClickPendingIntent(R.id.btnPrevSong, prevButtonPending);
 
-        //intent play song
+        // Intent play song
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, PLAY_CHANEL_ID.toString())
                 .setSmallIcon(R.drawable.ic_album_black_small)
                 .setDefaults(0)

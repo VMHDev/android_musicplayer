@@ -28,7 +28,12 @@
     <dimen name="image_optiton_sheet">64dp</dimen>
     <dimen name="image_card_item">48dp</dimen>
     <dimen name="image_card_item_playlist">64dp</dimen>
+    <dimen name="image_card_item_playlist_recent">128dp</dimen>
     <dimen name="image_icon_item">48dp</dimen>
 
     <dimen name="max_height_dialog">360dp</dimen>
+
+    <dimen name="width_artist_recent_hoz">148dp</dimen>
+    <dimen name="border_radius_xnormal">24dp</dimen>
+
 </resources>
