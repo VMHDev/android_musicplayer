@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/CreatePlaylistContainer"
+    android:background="@color/colorBgPrimaryTranslucent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBgPrimaryTranslucent"
+        android:fitsSystemWindows="true"
+        app:titleTextColor="@color/colorWhite"
+        tools:ignore="MissingConstraints">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tbplaylistCreate"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="top"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/PopupMenu"
+            app:title="Playlist"
+            app:titleEnabled="false" />
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBgPrimaryTranslucent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/margin_size_normal"
+        android:paddingVertical="@dimen/margin_size_snormal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:paddingVertical="@dimen/text_size_normal"
+            android:text="Đặt tên cho playlist của bạn"
+            android:textColor="@color/colorTitleWhitePrimary"
+            android:textSize="@dimen/text_size_large" />
+
+        <EditText
+            android:id="@+id/txtTilePlaylistCreate"
+            style="@style/EditText.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:drawableTint="@color/colorWhite"
+            android:ems="10"
+            android:background="@null"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="50dp"
+            android:textSize="30dp"/>
+        <View
+            android:id="@+id/UnderLine"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/txtTilePlaylistCreate"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"
+            android:background="#03f94e"
+            android:layout_marginBottom="20dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <Button
+                    android:id="@+id/btnCancelCreatePlaylist"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/colorWhite"
+                    android:text="Hủy" />
+
+                <Button
+                    android:id="@+id/btnSubmitCreatePlaylist"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:textColor="#03f94e"
+                    android:text="Đồng ý" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

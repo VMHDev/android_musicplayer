@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".SplashActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.2"
+        android:src="@mipmap/splash_background"/>
+
+    <TextView
+        android:id="@+id/txtTitleApp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/margin_size_normal"
+        android:gravity="center"
+        android:text="@string/app_sologan"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/text_size_splash_primary"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTitleApp"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@color/colorTitleWhitePrimary"
+        android:textSize="@dimen/text_size_xlarge" />
+</RelativeLayout>
